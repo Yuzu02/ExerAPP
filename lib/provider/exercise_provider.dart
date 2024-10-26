@@ -3,6 +3,7 @@ import 'package:exerapp/exercise/calculator_app.dart';
 import 'package:exerapp/exercise/ciclo_activity.dart';
 import 'package:exerapp/exercise/list_view.dart';
 import 'package:exerapp/models/exercise.dart';
+import 'package:exerapp/screens/extra/url_input_screen.dart';
 import 'package:flutter/foundation.dart';
 
 class ExerciseProvider with ChangeNotifier {
@@ -39,7 +40,18 @@ class ExerciseProvider with ChangeNotifier {
         app: const CustomListView(),
         difficulty: "Fácil",
         tags: ["ListView", "StatelessWidget"],
-        concepts: ["ListView", "ListTile"]),
+        concepts: ["ListView", "ListTile"]
+        ),
+        Exercise( 
+          id : "4",
+          title : "webview",
+          description : "Muestra una página web en tu aplicación",
+          category : ExerciseCategory.utilities,
+          app : const UrlInputScreen(),
+          difficulty : "Intermedio",
+          tags : ["WebView", "StatefulWidget"],
+          concepts : ["webview", "webview_flutter"]
+        ),
     // Añade  más ejercicios aquí
   ];
 

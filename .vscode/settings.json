@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["exerapp", "Fluttertoast"]
+  "cSpell.words": ["exerapp", "Fluttertoast", "wkwebview"],
+  "conventionalCommits.scopes": ["Exercise"]
 }
