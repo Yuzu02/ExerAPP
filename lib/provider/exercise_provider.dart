@@ -2,6 +2,9 @@
 import 'package:exerapp/exercise/calculator_app.dart';
 import 'package:exerapp/exercise/ciclo_activity.dart';
 import 'package:exerapp/exercise/list_view.dart';
+import 'package:exerapp/exercise/promedio.dart';
+import 'package:exerapp/exercise/radio_button.dart';
+import 'package:exerapp/exercise/sumar.dart';
 import 'package:exerapp/models/exercise.dart';
 import 'package:exerapp/screens/extra/url_input_screen.dart';
 import 'package:flutter/foundation.dart';
@@ -40,18 +43,43 @@ class ExerciseProvider with ChangeNotifier {
         app: const CustomListView(),
         difficulty: "Fácil",
         tags: ["ListView", "StatelessWidget"],
-        concepts: ["ListView", "ListTile"]
-        ),
-        Exercise( 
-          id : "4",
-          title : "webview",
-          description : "Muestra una página web en tu aplicación",
-          category : ExerciseCategory.utilities,
-          app : const UrlInputScreen(),
-          difficulty : "Intermedio",
-          tags : ["WebView", "StatefulWidget"],
-          concepts : ["webview", "webview_flutter"]
-        ),
+        concepts: ["ListView", "ListTile"]),
+    Exercise(
+        id: "4",
+        title: "webview",
+        description: "Muestra una página web en tu aplicación",
+        category: ExerciseCategory.utilities,
+        app: const UrlInputScreen(),
+        difficulty: "Intermedio",
+        tags: ["WebView", "StatefulWidget"],
+        concepts: ["webview", "webview_flutter"]),
+    Exercise(
+        id: '5',
+        title: 'Sumar',
+        description: 'Suma dos números',
+        category: ExerciseCategory.calculators,
+        app: const SumWidget(),
+        difficulty: 'Fácil',
+        tags: ['Suma', 'Básico'],
+        concepts: ['StatefulWidget', 'TextField', 'SnackBar']),
+    Exercise(
+        id: '6',
+        title: 'Promedio Estudiante',
+        description: 'Calcula el promedio de tres calificaciones',
+        category: ExerciseCategory.calculators,
+        app: const StudentStatusWidget(),
+        difficulty: 'Fácil',
+        tags: ['Promedio', 'Básico'],
+        concepts: ['StatefulWidget', 'TextField', 'SnackBar']),
+    Exercise(
+        id: '7',
+        title: 'RadioButton',
+        description: 'Calcula la suma o resta de dos números',
+        category: ExerciseCategory.calculators,
+        app: const RadioButtonWidget(),
+        difficulty: 'Fácil',
+        tags: ['RadioButton', 'Básico'],
+        concepts: ['StatefulWidget', 'TextField', 'SnackBar', 'Radio']),
     // Añade  más ejercicios aquí
   ];
 

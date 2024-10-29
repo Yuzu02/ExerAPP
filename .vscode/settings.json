@@ -1,4 +1,10 @@
 {
-  "cSpell.words": ["exerapp", "Fluttertoast", "inappwebview", "wkwebview"],
+  "cSpell.words": [
+    "exerapp",
+    "Fluttertoast",
+    "fullscreen",
+    "inappwebview",
+    "wkwebview"
+  ],
   "conventionalCommits.scopes": ["Exercise"]
 }

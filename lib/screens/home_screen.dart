@@ -1,14 +1,13 @@
-// lib/screens/home_screen.dart
-
 import 'package:exerapp/models/exercise.dart';
 import 'package:exerapp/provider/exercise_provider.dart';
 import 'package:exerapp/widgets/category_drawer.dart';
 import 'package:exerapp/widgets/exercise_card.dart';
+import 'package:exerapp/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key}); 
+  const HomeScreen({super.key});
 
   @override
   HomeScreenState createState() => HomeScreenState();
@@ -17,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   String searchQuery = '';
   ExerciseCategory? selectedCategory;
+  bool isSearchVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class HomeScreenState extends State<HomeScreen> {
         title: const Text('Ejercicios de Programación'),
       ),
       drawer: CategoryDrawer(
-        key: const Key('categoryDrawer'), 
+        key: const Key('categoryDrawer'),
         selectedCategory: selectedCategory,
         onCategorySelected: (category) {
           setState(() {
@@ -35,13 +35,22 @@ class HomeScreenState extends State<HomeScreen> {
         },
       ),
       body: Consumer<ExerciseProvider>(
-        // Corregido
         builder: (context, exerciseProvider, child) {
           final filteredExercises =
               exerciseProvider.searchExercises(searchQuery, selectedCategory);
 
           return Column(
             children: [
+              // Show search bar if isSearchVisible is true
+              if (isSearchVisible)
+                CustomSearchBar(
+                  onSearch: (query) {
+                    setState(() {
+                      searchQuery = query;
+                    });
+                  },
+                ),
+
               // Chips de filtros activos
               if (selectedCategory != null || searchQuery.isNotEmpty)
                 Padding(
@@ -73,27 +82,33 @@ class HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               Expanded(
-                  child: filteredExercises.isEmpty
-                      ? const Center(
-                          child: Text('No se encontraron ejercicios'),
-                        )
-                      : ListView.builder(
-                          itemCount: filteredExercises.length,
-                          itemBuilder: (context, index) {
-                            return ExerciseCard(
-                              exercise: filteredExercises[index],
-                            );
-                          },
-                        )),
+                child: filteredExercises.isEmpty
+                    ? const Center(
+                        child: Text('No se encontraron ejercicios'),
+                      )
+                    : ListView.builder(
+                        itemCount: filteredExercises.length,
+                        itemBuilder: (context, index) {
+                          return ExerciseCard(
+                            exercise: filteredExercises[index],
+                          );
+                        },
+                      ),
+              ),
             ],
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navegar a la pantalla de búsqueda
+          setState(() {
+            isSearchVisible = !isSearchVisible; // Toggle search visibility
+            if (!isSearchVisible) {
+              searchQuery = ''; // Clear search when hiding
+            }
+          });
         },
-        child: const Icon(Icons.search),
+        child: Icon(isSearchVisible ? Icons.close : Icons.search),
       ),
     );
   }

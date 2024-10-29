@@ -1,64 +1,89 @@
-// lib/screens/exercise_solution_screen.dart
-import 'package:exerapp/models/exercise.dart';
+// exercise_solution_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:exerapp/models/exercise.dart';
 
-class ExerciseSolutionScreen extends StatelessWidget {
+class ExerciseSolutionScreen extends StatefulWidget {
   final Exercise exercise;
-  final bool showCode;
 
   const ExerciseSolutionScreen({
     super.key,
     required this.exercise,
-    this.showCode = false,
   });
+
+  @override
+  State<ExerciseSolutionScreen> createState() => _ExerciseSolutionScreenState();
+}
+
+class _ExerciseSolutionScreenState extends State<ExerciseSolutionScreen> {
+  bool _isFullScreen = false;
+
+  void _toggleFullScreen() {
+    setState(() {
+      _isFullScreen = !_isFullScreen;
+    });
+    if (_isFullScreen) {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    } else {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    }
+  }
+
+  Future<void> _openGitHub() async {
+    final Uri url = Uri.parse('https://github.com/Yuzu02/exerapp');
+    try {
+      if (!await launchUrl(
+        url,
+        mode: LaunchMode.externalApplication,
+      )) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No se pudo abrir el repositorio'),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error al abrir el repositorio'),
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(exercise.title),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.code),
-            onPressed: () {
-              // Implementar vista del código
-            },
-          ),
-        ],
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Barra de información
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  Icon(exercise.category.icon),
-                  const SizedBox(width: 8),
-                  Text(
-                    exercise.category.name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
+      appBar: _isFullScreen
+          ? null
+          : AppBar(
+              title: Text(widget.exercise.title),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.code_outlined),
+                  onPressed: _openGitHub,
+                  tooltip: 'Ver código en GitHub',
+                ),
+                IconButton(
+                  icon: const Icon(Icons.fullscreen),
+                  onPressed: _toggleFullScreen,
+                  tooltip: 'Pantalla completa',
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-
-            // Mini-app container
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
+      body: Center(
+        child: Container(
+          margin: EdgeInsets.all(_isFullScreen ? 0 : 16),
+          decoration: _isFullScreen
+              ? null
+              : BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey[300]!),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.1),
@@ -68,15 +93,33 @@ class ExerciseSolutionScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: exercise.app,
-                ),
-              ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(_isFullScreen ? 0 : 12),
+            child: Stack(
+              children: [
+                Center(child: widget.exercise.app),
+                if (_isFullScreen)
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: IconButton(
+                      icon: const Icon(Icons.fullscreen_exit),
+                      onPressed: _toggleFullScreen,
+                      color: Colors.black54,
+                      tooltip: 'Salir de pantalla completa',
+                    ),
+                  ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    super.dispose();
   }
 }

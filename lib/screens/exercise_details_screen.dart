@@ -1,8 +1,9 @@
-//
-// lib/screens/exercise_detail_screen.dart
+// exercise_detail_screen.dart
+import 'package:exerapp/models/exercise.dart';
+import 'package:exerapp/screens/exercise_screen.dart';
 import 'package:flutter/material.dart';
-import '../models/exercise.dart';
-import 'exercise_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ExerciseDetailScreen extends StatelessWidget {
   final Exercise exercise;
@@ -12,11 +13,44 @@ class ExerciseDetailScreen extends StatelessWidget {
     required this.exercise,
   });
 
+  Future<void> _openGitHub(BuildContext context) async {
+    final Uri url = Uri.parse('https://github.com/Yuzu02/exerapp');
+    try {
+      if (!await launchUrl(
+        url,
+        mode: LaunchMode.externalApplication,
+      )) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No se pudo abrir el repositorio'),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error al abrir el repositorio'),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(exercise.title),
+        actions: [
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.github),
+            onPressed: () => _openGitHub(context),
+            tooltip: 'Ver código en GitHub',
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -94,27 +128,48 @@ class ExerciseDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
 
-                  // Botón para ver solución
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ExerciseSolutionScreen(
-                              exercise: exercise,
-                            ),
+                  // Botones de acción
+                  Column(
+                    children: [
+                      // Botón para ver solución
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
                           ),
-                        );
-                      },
-                      child: const Text(
-                        'Ver solución',
-                        style: TextStyle(fontSize: 16),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ExerciseSolutionScreen(
+                                  exercise: exercise,
+                                ),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            'Ver solución',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(height: 12),
+                      // Botón para ver repositorio
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                          ),
+                          onPressed: () => _openGitHub(context),
+                          icon: const FaIcon(FontAwesomeIcons.github),
+                          label: const Text(
+                            'Ver código en GitHub',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
