@@ -9,7 +9,6 @@ class CalculatorApp extends StatefulWidget {
 
 class CalculatorAppState extends State<CalculatorApp> {
   String _output = '0';
-  String _input = '';
   double _num1 = 0;
   String _operand = '';
   bool _newNumber = true;
@@ -18,7 +17,6 @@ class CalculatorAppState extends State<CalculatorApp> {
     setState(() {
       if (buttonText == 'C') {
         _output = '0';
-        _input = '';
         _num1 = 0;
         _operand = '';
         _newNumber = true;

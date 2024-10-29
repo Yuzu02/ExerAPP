@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class WebViewScreen extends StatefulWidget {
   final String url;
@@ -15,100 +14,109 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  late final WebViewController _controller;
+  InAppWebViewController? _webViewController;
   bool isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    late final PlatformWebViewControllerCreationParams params;
-    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-      params = WebKitWebViewControllerCreationParams(
-        allowsInlineMediaPlayback: true,
-        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-      );
-    } else {
-      params = const PlatformWebViewControllerCreationParams();
-    }
-
-    final WebViewController controller =
-        WebViewController.fromPlatformCreationParams(params);
-
-    controller
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            debugPrint('WebView is loading (progress : $progress%)');
-          },
-          onPageStarted: (String url) {
-            debugPrint('Page started loading: $url');
-          },
-          onPageFinished: (String url) {
-            debugPrint('Page finished loading: $url');
-            setState(() {
-              isLoading = false;
-            });
-          },
-          onWebResourceError: (WebResourceError error) {
-            debugPrint('''
-Page resource error:
-  code: ${error.errorCode}
-  description: ${error.description}
-  errorType: ${error.errorType}
-  isForMainFrame: ${error.isForMainFrame}
-            ''');
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse(widget.url));
-
-    _controller = controller;
-  }
+  String? errorMessage;
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: true,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('WebView'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () async {
-                if (await _controller.canGoBack()) {
-                  await _controller.goBack();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('WebView'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              if (await _webViewController?.canGoBack() ?? false) {
+                await _webViewController?.goBack();
+              } else {
+                if (mounted) {
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
                 }
+              }
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_forward),
+            onPressed: () async {
+              if (await _webViewController?.canGoForward() ?? false) {
+                await _webViewController?.goForward();
+              }
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              setState(() {
+                isLoading = true;
+                errorMessage = null;
+              });
+              _webViewController?.reload();
+            },
+          ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          if (errorMessage != null)
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    errorMessage!,
+                    style: const TextStyle(color: Colors.red),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        errorMessage = null;
+                        isLoading = true;
+                      });
+                      _webViewController?.reload();
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            )
+          else
+            InAppWebView(
+              initialUrlRequest:
+                  URLRequest(url: WebUri(Uri.parse(widget.url).toString())),
+              onWebViewCreated: (controller) {
+                _webViewController = controller;
+              },
+              onLoadStart: (controller, url) {
+                setState(() {
+                  isLoading = true;
+                  errorMessage = null;
+                });
+              },
+              onLoadStop: (controller, url) async {
+                setState(() {
+                  isLoading = false;
+                });
+              },
+              onReceivedError: (controller, request, error) {
+                setState(() {
+                  isLoading = false;
+                  errorMessage = 'Error: ${error.description}';
+                });
               },
             ),
-            IconButton(
-              icon: const Icon(Icons.arrow_forward),
-              onPressed: () async {
-                if (await _controller.canGoForward()) {
-                  await _controller.goForward();
-                }
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: () {
-                _controller.reload();
-              },
-            ),
-          ],
-        ),
-        body: Stack(
-          children: [
-            WebViewWidget(controller: _controller),
-            if (isLoading)
-              const Center(
+          if (isLoading)
+            Container(
+              color: Colors.white,
+              child: const Center(
                 child: CircularProgressIndicator(),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }

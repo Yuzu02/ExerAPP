@@ -13,6 +13,11 @@ class _UrlInputScreenState extends State<UrlInputScreen> {
   final TextEditingController _urlController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -72,7 +77,7 @@ class _UrlInputScreenState extends State<UrlInputScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Por favor ingresa una URL válida'),
+          content: Text('Please enter a valid URL'),
           backgroundColor: Colors.red,
         ),
       );
