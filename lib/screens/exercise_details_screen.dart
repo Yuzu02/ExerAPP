@@ -1,8 +1,9 @@
 // exercise_detail_screen.dart
 import 'package:exerapp/models/exercise.dart';
 import 'package:exerapp/screens/exercise_screen.dart';
+import 'package:exerapp/utils/url_handler.dart';
+import 'package:exerapp/widgets/github_icon_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ExerciseDetailScreen extends StatelessWidget {
@@ -13,43 +14,13 @@ class ExerciseDetailScreen extends StatelessWidget {
     required this.exercise,
   });
 
-  Future<void> _openGitHub(BuildContext context) async {
-    final Uri url = Uri.parse('https://github.com/Yuzu02/exerapp');
-    try {
-      if (!await launchUrl(
-        url,
-        mode: LaunchMode.externalApplication,
-      )) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No se pudo abrir el repositorio'),
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Error al abrir el repositorio'),
-          ),
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(exercise.title),
         actions: [
-          IconButton(
-            icon: const FaIcon(FontAwesomeIcons.github),
-            onPressed: () => _openGitHub(context),
-            tooltip: 'Ver código en GitHub',
-          ),
+          GitHubIconButton(), // Agrega el botón de GitHub
         ],
       ),
       body: SingleChildScrollView(
@@ -161,7 +132,15 @@ class ExerciseDetailScreen extends StatelessWidget {
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                           ),
-                          onPressed: () => _openGitHub(context),
+                          onPressed: () async {
+                            final messenger = ScaffoldMessenger.of(context);
+                            try {
+                              UrlHandler.openGitHub(context);
+                            } catch (e) {
+                              messenger.showSnackBar(
+                                  SnackBar(content: Text(e.toString())));
+                            }
+                          },
                           icon: const FaIcon(FontAwesomeIcons.github),
                           label: const Text(
                             'Ver código en GitHub',

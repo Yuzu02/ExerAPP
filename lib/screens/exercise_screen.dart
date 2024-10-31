@@ -1,7 +1,7 @@
 // exercise_solution_screen.dart
+import 'package:exerapp/widgets/github_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:exerapp/models/exercise.dart';
 
 class ExerciseSolutionScreen extends StatefulWidget {
@@ -30,32 +30,6 @@ class _ExerciseSolutionScreenState extends State<ExerciseSolutionScreen> {
     }
   }
 
-  Future<void> _openGitHub() async {
-    final Uri url = Uri.parse('https://github.com/Yuzu02/exerapp');
-    try {
-      if (!await launchUrl(
-        url,
-        mode: LaunchMode.externalApplication,
-      )) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No se pudo abrir el repositorio'),
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Error al abrir el repositorio'),
-          ),
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,11 +38,7 @@ class _ExerciseSolutionScreenState extends State<ExerciseSolutionScreen> {
           : AppBar(
               title: Text(widget.exercise.title),
               actions: [
-                IconButton(
-                  icon: const Icon(Icons.code_outlined),
-                  onPressed: _openGitHub,
-                  tooltip: 'Ver código en GitHub',
-                ),
+                GitHubIconButton(),
                 IconButton(
                   icon: const Icon(Icons.fullscreen),
                   onPressed: _toggleFullScreen,

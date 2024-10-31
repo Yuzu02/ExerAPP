@@ -1,9 +1,13 @@
 // lib/providers/exercise_provider.dart
 import 'package:exerapp/exercise/calculator_app.dart';
+import 'package:exerapp/exercise/checkbox_calc.dart';
 import 'package:exerapp/exercise/ciclo_activity.dart';
 import 'package:exerapp/exercise/list_view.dart';
 import 'package:exerapp/exercise/promedio.dart';
 import 'package:exerapp/exercise/radio_button.dart';
+import 'package:exerapp/exercise/radio_button_calc.dart';
+import 'package:exerapp/exercise/spinner_calc.dart';
+import 'package:exerapp/exercise/spinner_personalized.dart';
 import 'package:exerapp/exercise/sumar.dart';
 import 'package:exerapp/models/exercise.dart';
 import 'package:exerapp/screens/extra/url_input_screen.dart';
@@ -80,6 +84,62 @@ class ExerciseProvider with ChangeNotifier {
         difficulty: 'Fácil',
         tags: ['RadioButton', 'Básico'],
         concepts: ['StatefulWidget', 'TextField', 'SnackBar', 'Radio']),
+    Exercise(
+        id: '8',
+        title: 'Radio Button Calculator',
+        description:
+            'Calcula la suma, resta, multiplicación o división de dos números',
+        category: ExerciseCategory.calculators,
+        app: const RadioCalc(),
+        difficulty: 'Intermedio',
+        tags: ['RadioButton', 'Intermedio'],
+        concepts: ['StatefulWidget', 'TextField', 'SnackBar', 'Radio']),
+    Exercise(
+        id: '9',
+        title: 'CheckBox Calculator',
+        description: 'Calcula la suma o resta de dos números al mismo tiempo',
+        category: ExerciseCategory.calculators,
+        app: const CheckBoxCalc(),
+        difficulty: 'Intermedio',
+        tags: ['CheckBox', 'Intermedio'],
+        concepts: ['StatefulWidget', 'TextField', 'SnackBar', 'CheckBox']),
+    Exercise(
+        id: '10',
+        title: 'Calculadora Spinner',
+        description:
+            'Calcula la suma, resta, multiplicación o división de dos números',
+        category: ExerciseCategory.calculators,
+        app: const SpinnerWidget(),
+        difficulty: 'Intermedio',
+        tags: [
+          'DropdownButton',
+          'Intermedio'
+        ],
+        concepts: [
+          'StatefulWidget',
+          'TextField',
+          'SnackBar',
+          'DropdownButton'
+        ]),
+    Exercise(
+        id: '11',
+        title: 'Calculadora Spinner Personalizada',
+        description:
+            'Calcula la suma, resta, multiplicación o división de dos números',
+        category: ExerciseCategory.calculators,
+        app: const SpinnerVtwo(),
+        difficulty: 'Intermedio',
+        tags: [
+          'DropdownButton',
+          'Intermedio'
+        ],
+        concepts: [
+          'StatefulWidget',
+          'TextField',
+          'SnackBar',
+          'DropdownButton',
+          'DropdownMenuItem'
+        ]),
     // Añade  más ejercicios aquí
   ];
 
