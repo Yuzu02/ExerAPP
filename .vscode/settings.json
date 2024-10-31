@@ -9,5 +9,5 @@
     "Vtwo",
     "wkwebview"
   ],
-  "conventionalCommits.scopes": ["Exercise"]
+  "conventionalCommits.scopes": ["Exercise", "Project Structure"]
 }
