@@ -1,4 +1,5 @@
 // lib/providers/exercise_provider.dart
+import 'package:exerapp/models/exercise_category.dart';
 import 'package:flutter/foundation.dart';
 import 'exercise_list.dart';
 import 'package:exerapp/models/exercise.dart';

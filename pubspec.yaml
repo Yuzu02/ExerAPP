@@ -30,7 +30,7 @@ environment:
 dependencies:
   provider: ^6.0.5
   fluttertoast: ^8.0.9
-  flutter_inappwebview: ^6.1.5
+  shared_preferences: ^2.3.2
   flutter:
     sdk: flutter
 
@@ -39,6 +39,13 @@ dependencies:
   cupertino_icons: ^1.0.8
   font_awesome_flutter: ^10.7.0
   dropdown_button2: ^2.3.9
+  url_launcher: ^6.3.1
+  webview_flutter: ^4.10.0
+  path_provider: ^2.1.5
+  permission_handler: ^11.3.1
+  device_info_plus: ^11.1.0
+  sqflite: ^2.4.0
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +70,21 @@ flutter:
   assets:
     - assets/images/vardemon_icon.png
     - assets/images/hand.png
+    - assets/images/flutter_logo.png
+    - assets/frutas_icon/bananas.png
+    - assets/frutas_icon/cerezas.png
+    - assets/frutas_icon/frambuesas.png
+    - assets/frutas_icon/fresas.png
+    - assets/frutas_icon/kiwis.png
+    - assets/frutas_icon/mangos.png
+    - assets/frutas_icon/manzanas.png
+    - assets/frutas_icon/melon.png
+    - assets/frutas_icon/naranjas.png
+    - assets/frutas_icon/pera.png
+    - assets/frutas_icon/pina.png
+    - assets/frutas_icon/sandia.png
+    - assets/frutas_icon/uvas.png
+    - assets/frutas_icon/zarzamora.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

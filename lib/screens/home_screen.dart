@@ -1,4 +1,4 @@
-import 'package:exerapp/models/exercise.dart';
+import 'package:exerapp/models/exercise_category.dart';
 import 'package:exerapp/provider/exercise_provider.dart';
 import 'package:exerapp/widgets/category_drawer.dart';
 import 'package:exerapp/widgets/exercise_card.dart';

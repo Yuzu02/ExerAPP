@@ -1,16 +1,25 @@
 // lib/providers/exercise_list.dart
+import 'package:exerapp/exercise/agenda.dart';
 import 'package:exerapp/exercise/calculator_app.dart';
 import 'package:exerapp/exercise/checkbox_calc.dart';
 import 'package:exerapp/exercise/ciclo_activity.dart';
+import 'package:exerapp/exercise/editor_archivo.dart';
+import 'package:exerapp/exercise/frame_layout.dart';
 import 'package:exerapp/exercise/image_button.dart';
+import 'package:exerapp/exercise/linear_layout.dart';
 import 'package:exerapp/exercise/list_view.dart';
+import 'package:exerapp/exercise/productos_sqlite.dart';
 import 'package:exerapp/exercise/promedio.dart';
 import 'package:exerapp/exercise/radio_button.dart';
 import 'package:exerapp/exercise/radio_button_calc.dart';
+import 'package:exerapp/exercise/save_email.dart';
+import 'package:exerapp/exercise/scroll_view.dart';
+import 'package:exerapp/exercise/sd_file.dart';
 import 'package:exerapp/exercise/spinner_calc.dart';
 import 'package:exerapp/exercise/spinner_personalized.dart';
 import 'package:exerapp/exercise/sumar.dart';
 import 'package:exerapp/models/exercise.dart';
+import 'package:exerapp/models/exercise_category.dart';
 import 'package:exerapp/screens/extra/url_input_screen.dart';
 
 final List<Exercise> exerciseList = [
@@ -27,7 +36,7 @@ final List<Exercise> exerciseList = [
       'Operaciones matemáticas'
     ],
     difficulty: 'Fácil',
-    tags: ['Calculadora', 'Básico'],
+    tags: ['Calculadora', 'TableRow', 'TableLayout'],
   ),
   Exercise(
       id: '2',
@@ -140,6 +149,86 @@ final List<Exercise> exerciseList = [
       difficulty: "Fácil",
       tags: ["ImageButton", "StatefulWidget"],
       concepts: ["Image", "InkWell"]),
-
-  // Añade  más ejercicios aquí
+  Exercise(
+      id: '13',
+      title: "SharedPreferences",
+      description: "Guarda y recupera datos en el dispositivo",
+      category: ExerciseCategory.utilities,
+      app: const EmailInputWidget(),
+      difficulty: "Intermedio",
+      tags: ["SharedPreferences", "StatefulWidget"],
+      concepts: ["SharedPreferences", "TextField"]),
+  Exercise(
+      id: '14',
+      title: 'Agenda',
+      description: 'Guarda y recupera datos en el dispositivo',
+      category: ExerciseCategory.utilities,
+      app: const AgendaApp(),
+      difficulty: 'Intermedio',
+      tags: ['SharedPreferences', 'StatefulWidget'],
+      concepts: ['SharedPreferences', 'TextField']),
+  Exercise(
+      id: '15',
+      title: 'FileEditorApp',
+      description: 'Guarda y recupera datos en el dispositivo',
+      category: ExerciseCategory.utilities,
+      app: const FileEditorApp(),
+      difficulty: 'Intermedio',
+      tags: ['permission_handler', 'StatefulWidget', 'path_provider'],
+      concepts: ['SharedPreferences', 'TextField']),
+  Exercise(
+    id: '16',
+    title: 'SD FileEditor',
+    description:
+        "Editor de archivos de texto que permite crear, guardar y leer archivos en la memoria externa del dispositivo",
+    category: ExerciseCategory.utilities,
+    app: const SDFileEditorApp(),
+    difficulty: 'Intermedio',
+    tags: [
+      "File Handling",
+      "Storage",
+      "Permissions",
+      "TextFields",
+      "StatefulWidget"
+    ],
+    concepts: ["File I/O"],
+  ),
+  Exercise(
+      id: '17',
+      title: 'CRUD SQLite',
+      description: 'Aplicación para gestionar productos en una base de datos',
+      category: ExerciseCategory.utilities,
+      app: const ProductManagerApp(),
+      difficulty: 'Intermedio',
+      tags: ['SFQLite', 'CRUD', 'StatefulWidget'],
+      concepts: ['SFQLite', 'CRUD', 'Database']),
+  Exercise(
+      id: '18',
+      title: 'Linear Layout',
+      description: 'Login con Linear Layout',
+      category: ExerciseCategory.visualization,
+      app: LinearLayoutLogin(),
+      difficulty: 'Fácil',
+      tags: ['Login', 'Linear Layout'],
+      concepts: ['Text', 'TextField', 'ElevatedButton']),
+  Exercise(
+      id: '19',
+      title: 'Frame Layout',
+      description: 'Uso de un button para ocultar y mostrar una imagen',
+      category: ExerciseCategory.visualization,
+      app: const FrameLayoutExample(),
+      difficulty: 'Fácil',
+      tags: ['Frame Layout', 'ElevatedButton', 'Image'],
+      concepts: ['Stack', 'Positioned', 'Visibility']),
+  Exercise(
+      id: '20',
+      title: 'Galería de Frutas',
+      description:
+          'Muestra una galería de frutas con imágenes usando SingleChildScrollView',
+      category: ExerciseCategory.visualization,
+      app: const FruitGallery(),
+      difficulty: 'Fácil',
+      tags: ['SingleChildScrollView', 'Card', 'Column'],
+      concepts: ['SingleChildScrollView', 'Card', 'Column']),
+  // More Some on..
 ];

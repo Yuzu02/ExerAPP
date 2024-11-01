@@ -49,22 +49,27 @@ class CalculatorAppState extends State<CalculatorApp> {
           _output = buttonText;
           _newNumber = false;
         } else {
-          _output = _output + buttonText;
+          _output += buttonText;
         }
       }
     });
   }
 
-  Widget _buildButton(String buttonText) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(4),
-        child: ElevatedButton(
-          child: Text(
-            buttonText,
-            style: const TextStyle(fontSize: 24),
+  Widget _buildButton(String buttonText, {Color color = Colors.deepPurple}) {
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
           ),
-          onPressed: () => _onButtonPressed(buttonText),
+        ),
+        onPressed: () => _onButtonPressed(buttonText),
+        child: Text(
+          buttonText,
+          style: const TextStyle(fontSize: 24, color: Colors.white),
         ),
       ),
     );
@@ -72,50 +77,59 @@ class CalculatorAppState extends State<CalculatorApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.centerRight,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
-          child: Text(
-            _output,
-            style: const TextStyle(fontSize: 48),
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      body: Column(
+        children: [
+          Container(
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+            child: Text(
+              _output,
+              style: const TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87),
+            ),
           ),
-        ),
-        Expanded(
-          child: Column(
-            children: [
-              Row(children: [
-                _buildButton('7'),
-                _buildButton('8'),
-                _buildButton('9'),
-                _buildButton('÷'),
-              ]),
-              Row(children: [
-                _buildButton('4'),
-                _buildButton('5'),
-                _buildButton('6'),
-                _buildButton('×'),
-              ]),
-              Row(children: [
-                _buildButton('1'),
-                _buildButton('2'),
-                _buildButton('3'),
-                _buildButton('-'),
-              ]),
-              Row(children: [
-                _buildButton('0'),
-                _buildButton('.'),
-                _buildButton('='),
-                _buildButton('+'),
-              ]),
-              Row(children: [
-                _buildButton('C'),
-              ]),
-            ],
+          Expanded(
+            child: Table(
+              children: [
+                TableRow(children: [
+                  _buildButton('7'),
+                  _buildButton('8'),
+                  _buildButton('9'),
+                  _buildButton('÷', color: Colors.deepOrange),
+                ]),
+                TableRow(children: [
+                  _buildButton('4'),
+                  _buildButton('5'),
+                  _buildButton('6'),
+                  _buildButton('×', color: Colors.deepOrange),
+                ]),
+                TableRow(children: [
+                  _buildButton('1'),
+                  _buildButton('2'),
+                  _buildButton('3'),
+                  _buildButton('-', color: Colors.deepOrange),
+                ]),
+                TableRow(children: [
+                  _buildButton('0'),
+                  _buildButton('.'),
+                  _buildButton('=', color: Colors.deepOrange),
+                  _buildButton('+', color: Colors.deepOrange),
+                ]),
+                TableRow(children: [
+                  _buildButton('C', color: Colors.redAccent),
+                  Container(),
+                  Container(),
+                  Container(),
+                ]),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

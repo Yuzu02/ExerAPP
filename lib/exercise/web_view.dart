@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
   final String url;
-
   const WebViewScreen({
     super.key,
     required this.url,
@@ -14,9 +13,36 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  InAppWebViewController? _webViewController;
+  late final WebViewController _webViewController;
   bool isLoading = true;
   String? errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(NavigationDelegate(
+        onPageStarted: (String url) {
+          setState(() {
+            isLoading = true;
+            errorMessage = null;
+          });
+        },
+        onPageFinished: (String url) {
+          setState(() {
+            isLoading = false;
+          });
+        },
+        onWebResourceError: (WebResourceError error) {
+          setState(() {
+            isLoading = false;
+            errorMessage = 'Error: ${error.description}';
+          });
+        },
+      ))
+      ..loadRequest(Uri.parse(widget.url));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +53,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
           IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () async {
-              if (await _webViewController?.canGoBack() ?? false) {
-                await _webViewController?.goBack();
+              if (await _webViewController.canGoBack()) {
+                await _webViewController.goBack();
               } else {
-                if (mounted) {
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
-                  }
+                if (mounted && context.mounted) {
+                  Navigator.of(context).pop();
                 }
               }
             },
@@ -41,8 +65,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
           IconButton(
             icon: const Icon(Icons.arrow_forward),
             onPressed: () async {
-              if (await _webViewController?.canGoForward() ?? false) {
-                await _webViewController?.goForward();
+              if (await _webViewController.canGoForward()) {
+                await _webViewController.goForward();
               }
             },
           ),
@@ -53,7 +77,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 isLoading = true;
                 errorMessage = null;
               });
-              _webViewController?.reload();
+              _webViewController.reload();
             },
           ),
         ],
@@ -77,7 +101,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                         errorMessage = null;
                         isLoading = true;
                       });
-                      _webViewController?.reload();
+                      _webViewController.reload();
                     },
                     child: const Text('Retry'),
                   ),
@@ -85,30 +109,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
               ),
             )
           else
-            InAppWebView(
-              initialUrlRequest:
-                  URLRequest(url: WebUri(Uri.parse(widget.url).toString())),
-              onWebViewCreated: (controller) {
-                _webViewController = controller;
-              },
-              onLoadStart: (controller, url) {
-                setState(() {
-                  isLoading = true;
-                  errorMessage = null;
-                });
-              },
-              onLoadStop: (controller, url) async {
-                setState(() {
-                  isLoading = false;
-                });
-              },
-              onReceivedError: (controller, request, error) {
-                setState(() {
-                  isLoading = false;
-                  errorMessage = 'Error: ${error.description}';
-                });
-              },
-            ),
+            WebViewWidget(controller: _webViewController),
           if (isLoading)
             Container(
               color: Colors.white,

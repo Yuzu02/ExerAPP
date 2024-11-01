@@ -1,5 +1,6 @@
 // exercise_detail_screen.dart
 import 'package:exerapp/models/exercise.dart';
+import 'package:exerapp/models/exercise_category.dart';
 import 'package:exerapp/screens/exercise_screen.dart';
 import 'package:exerapp/utils/url_handler.dart';
 import 'package:exerapp/widgets/github_icon_widget.dart';

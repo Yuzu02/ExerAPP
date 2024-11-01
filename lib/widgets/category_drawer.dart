@@ -1,5 +1,5 @@
 // lib/widgets/category_drawer.dart
-import 'package:exerapp/models/exercise.dart';
+import 'package:exerapp/models/exercise_category.dart';
 import 'package:flutter/material.dart';
 
 class CategoryDrawer extends StatelessWidget {
