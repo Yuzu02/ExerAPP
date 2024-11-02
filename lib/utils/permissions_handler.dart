@@ -75,4 +75,42 @@ class PermissionHandler {
       return await Permission.storage.isGranted;
     }
   }
+
+  // Agregar método para permisos de audio
+  Future<bool> requestAudioPermissions() async {
+    try {
+      final microphoneStatus = await Permission.microphone.status;
+      debugPrint('Estado inicial del micrófono: $microphoneStatus');
+
+      if (!microphoneStatus.isGranted) {
+        final result = await Permission.microphone.request();
+        debugPrint('Resultado de solicitud de micrófono: $result');
+
+        if (!result.isGranted) {
+          showToast("Se requieren permisos de micrófono para grabar audio");
+          await openAppSettings();
+          return false;
+        }
+      }
+
+      // En iOS también necesitamos el permiso de audio
+      if (Platform.isIOS) {
+        final speechStatus = await Permission.speech.status;
+        if (!speechStatus.isGranted) {
+          final result = await Permission.speech.request();
+          if (!result.isGranted) {
+            showToast("Se requieren permisos de audio");
+            await openAppSettings();
+            return false;
+          }
+        }
+      }
+
+      return true;
+    } catch (e) {
+      debugPrint('Error al solicitar permisos de audio: $e');
+      showToast("Error al solicitar permisos de audio: $e");
+      return false;
+    }
+  }
 }

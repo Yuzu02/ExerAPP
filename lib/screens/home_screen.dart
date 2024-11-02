@@ -2,6 +2,7 @@ import 'package:exerapp/models/exercise_category.dart';
 import 'package:exerapp/provider/exercise_provider.dart';
 import 'package:exerapp/widgets/category_drawer.dart';
 import 'package:exerapp/widgets/exercise_card.dart';
+import 'package:exerapp/widgets/profile_overlay.dart';
 import 'package:exerapp/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,11 +19,28 @@ class HomeScreenState extends State<HomeScreen> {
   ExerciseCategory? selectedCategory;
   bool isSearchVisible = false;
 
+  void _showProfileOverlay() {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      pageBuilder: (context, animation1, animation2) {
+        return const ProfileOverlay();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ejercicios de Programación'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: _showProfileOverlay,
+          ),
+        ],
       ),
       drawer: CategoryDrawer(
         key: const Key('categoryDrawer'),

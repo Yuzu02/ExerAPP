@@ -2,6 +2,12 @@
 
 ExerAPP is a comprehensive project that encompasses all exercises from an Android course originally designed with Java, but implemented using Flutter. This project aims to provide a hands-on learning experience for Flutter developers by replicating Android exercises in a cross-platform environment.
 
+# 📚 The Original Android Course 📚
+
+The original Android course is a beginner-friendly course that covers various topics such as layouts, activities, intents, and more. By re-implementing these exercises in Flutter, developers can compare and contrast the two frameworks, gaining a deeper understanding of Flutter's capabilities.
+
+- [Course Link](https://youtube.com/playlist?list=PLyvsggKtwbLX06iMtXnRGX5lyjiiMaT2y&si=Hz5SNMBdwb2QvUg5)
+
 ## 📑 Table of Contents
 
 - [📖 Introduction](#introduction)

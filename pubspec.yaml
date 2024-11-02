@@ -46,6 +46,10 @@ dependencies:
   device_info_plus: ^11.1.0
   sqflite: ^2.4.0
   path: ^1.9.0
+  just_audio: ^0.9.42
+  audioplayers: ^6.1.0
+  flutter_sound: ^9.16.3
+  flutter_launcher_icons: ^0.14.1
 
 dev_dependencies:
   flutter_test:
@@ -85,6 +89,14 @@ flutter:
     - assets/frutas_icon/sandia.png
     - assets/frutas_icon/uvas.png
     - assets/frutas_icon/zarzamora.png
+    - assets/sound/sound_long.mp3
+    - assets/sound/sound_short.mp3
+    - assets/music/race.mp3
+    - assets/music/sound.mp3
+    - assets/music/tea.mp3
+    - assets/music/covers/tea_cover.jpg
+    - assets/music/covers/sound_cover.jpg
+    - assets/music/covers/race_cover.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
